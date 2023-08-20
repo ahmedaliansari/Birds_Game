@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duck Hunting Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <audio id="sound1" src="shoot.mp3" preload="auto"></audio>
+
+    <div class="main">
+        <h1 class="slide-from-top">Al-Ahmed.Com</h1>
+        <h3 class="fade-in">Hunting Birds</h3>
+    </div>
+
+    <div class="duck-container">
+        <input type="checkbox" name="duck" id="duck1">
+        <label for="duck1" class="duck"></label>
+
+        <input type="checkbox" name="duck" id="duck2">
+        <label for="duck2" class="duck"></label>
+
+        <input type="checkbox" name="duck" id="duck3">
+        <label for="duck3" class="duck"></label>
+
+        <input type="checkbox" name="duck" id="duck4">
+        <label for="duck4" class="duck"></label>
+
+        <input type="checkbox" name="duck" id="duck5">
+        <label for="duck5" class="duck"></label>
+    </div>
+
+    <div class="Score">Score: <span id="score">0</span></div>
+    <div class="Timer">Time left: <span id="timer">30</span> seconds</div>
+
+    <script>
+        $(document).ready(function () {
+            $(".slide-from-top").animate({ marginTop: "0px" }, 1000);
+            $(".fade-in").hide().fadeIn(1000);
+
+            $(window).on("beforeunload", function () {
+                $(window).scrollTop(0);
+            });
+
+            var timer = 30;
+            var timerInterval = setInterval(function () {
+                timer -= 1;
+                $("#timer").text(timer);
+                if (timer === 0) {
+                    clearInterval(timerInterval);
+                    checkScore();
+                }
+            }, 1000);
+
+            $(".duck-container input[type='checkbox']").on("click", function () {
+                $(this).attr("disabled", true);
+                $("#sound1")[0].play();
+                updateScore();
+            });
+
+            function updateScore() {
+                var currentScore = parseInt($("#score").text());
+                currentScore += 100;
+                $("#score").text(currentScore);
+                if (currentScore >= 500) {
+                    clearInterval(timerInterval);
+                    alert("Congrats - You Win!");
+                }
+            }
+
+            function checkScore() {
+                var currentScore = parseInt($("#score").text());
+                if (currentScore < 500) {
+                    alert("Time's up! You Lose!");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
